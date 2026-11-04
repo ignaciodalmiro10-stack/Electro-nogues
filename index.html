@@ -1,0 +1,1087 @@
+
+<!DOCTYPE html>
+< lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELECTRO NOGUES | Laboratorio Digital</title>
+
+<style>
+:root {
+  --bg: #081316;
+  --panel: #102226;
+  --panel2: #163238;
+  --green: #20e0b0;
+  --text: #e9f5f3;
+  --muted: #9bb6b2;
+  --border: #25454a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+header {
+  background: #0d2024;
+  border-bottom: 1px solid var(--border);
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.logo {
+  font-size: 21px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.logo span { color: var(--green); }
+header small { color: var(--muted); }
+.layout {
+  display: flex;
+  min-height: calc(100vh - 65px);
+}
+nav {
+  width: 220px;
+  flex-shrink: 0;
+  background: #0c1d20;
+  border-right: 1px solid var(--border);
+  padding: 20px 12px;
+}
+nav button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  padding: 13px;
+  border-radius: 9px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+nav button:hover, nav button.active {
+  background: var(--panel2);
+  color: var(--green);
+}
+main {
+  flex: 1;
+  padding: 28px;
+  max-width: 1100px;
+  margin: auto;
+  width: 100%;
+}
+.page { display: none; }
+.page.active { display: block; }
+h1 { font-size: 32px; margin-top: 5px; }
+h2 { color: var(--green); }
+h3 { margin-top: 0; }
+p, li { line-height: 1.65; }
+.muted { color: var(--muted); }
+.hero {
+  background: linear-gradient(135deg,#123b3c,#102226 70%);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 30px;
+  margin-bottom: 22px;
+}
+.hero h1 { font-size: 36px; }
+.hero span { color: var(--green); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 19px;
+  border-radius: 13px;
+}
+.card p { color: var(--muted); }
+.tag {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.notice {
+  border-left: 4px solid var(--green);
+  background: #102b2b;
+  padding: 14px;
+  border-radius: 7px;
+  margin: 18px 0;
+}
+.warning {
+  border-left: 4px solid #e6ad4c;
+  background: #302819;
+  padding: 14px;
+  border-radius: 7px;
+  margin: 18px 0;
+}
+.action {
+  background: var(--green);
+  color: #06201d;
+  border: 0;
+  border-radius: 9px;
+  padding: 12px 17px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px 4px 5px 0;
+}
+.action.secondary {
+  background: var(--panel2);
+  color: var(--green);
+  border: 1px solid var(--border);
+}
+input, textarea {
+  background: #0a1b1e;
+  color: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 13px;
+  width: 100%;
+  font-size: 15px;
+}
+.chat {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10;
+}
+.chat-toggle {
+  background: var(--green);
+  color: #06201d;
+  border: 0;
+  border-radius: 30px;
+  padding: 15px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 20px #0008;
+}
+.chat-window {
+  display: none;
+  width: min(350px,calc(100vw - 32px));
+  height: 470px;
+  background: #102226;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  flex-direction: column;
+  box-shadow: 0 8px 30px #0009;
+}
+.chat-window.open { display: flex; }
+.chat-head {
+  background: #153b3b;
+  color: var(--green);
+  padding: 16px;
+  font-weight: bold;
+}
+.chat-messages {
+  flex: 1;
+  padding: 13px;
+  overflow-y: auto;
+}
+.message {
+  background: #1a3539;
+  border-radius: 10px;
+  padding: 11px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.message.user {
+  background: #174c43;
+  margin-left: 35px;
+}
+.chat-input {
+  display: flex;
+  gap: 6px;
+  padding: 10px;
+  border-top: 1px solid var(--border);
+}
+.chat-input input { min-width: 0; }
+.chat-input button {
+  background: var(--green);
+  color: #06201d;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 13px;
+  font-weight: bold;
+}
+footer {
+  color: var(--muted);
+  text-align: center;
+  padding: 25px;
+  font-size: 12px;
+}
+@media(max-width:700px) {
+  .layout { display: block; }
+  nav {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    padding: 8px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  nav button {
+    min-width: max-content;
+    width: auto;
+    margin: 0 3px;
+    padding: 11px;
+  }
+  main { padding: 17px; }
+  h1 { font-size: 27px; }
+  .hero { padding: 21px; }
+}
+</style>
+</head>
+
+<>
+
+<header>
+  <div class="logo">ELECTRO<span>NOGUES.</span></div>
+  <small>LABORATORIO DIGITAL ⚡</small>
+</header>
+
+<div class="layout">
+<nav>
+
+  <button class="active" onclick="showPage('inicio',this)">⌂ Inicio</button>
+  <button onclick="showPage('electricidad',this)">⚡ Electricidad</button>
+  <button onclick="showPage('calculadora',this)">🧮 Calculadora</button>
+  <button onclick="showPage('constructor',this)">🔧 Constructor</button>
+  <button onclick="showPage('componentes',this)">◈ Componentes</button>
+  <button onclick="showPage('circuitos',this)">⌁ Circuitos</button>
+  <button onclick="showPage('tinkercad',this)">▣ Tinkercad</button>
+  <button onclick="showPage('problemas',this)">🔧 Problemas</button>
+  <button onclick="showPage('desafios',this)">🎯 Desafíos</button>
+</nav>
+
+<main>
+
+<section id="inicio" class="page active">
+  <div class="hero">
+    <div class="tag">BIENVENIDO AL LABORATORIO</div>
+    <h1>Aprendé electrónica con <span>ELECTRO NOGUES</span></h1>
+    <p>Un espacio para descubrir cómo funciona la electricidad, conocer componentes y aprender a crear circuitos.</p>
+    <button class="action" onclick="showPage('electricidad')">Comenzar a aprender →</button>
+  </div>
+
+  <h2>¿Qué podés aprender?</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>⚡ Electricidad</h3>
+      <p>Conocé el voltaje, la corriente, la resistencia y la energía.</p>
+    </div>
+    <div class="card">
+      <h3>🔌 Componentes</h3>
+      <p>Aprendé para qué sirven los LED, resistencias, cables y otros elementos.</p>
+    </div>
+    <div class="card">
+      <h3>🛠️ Circuitos</h3>
+      <p>Construí circuitos sencillos y entendé cómo funcionan.</p>
+    </div>
+    <div class="card">
+      <h3>🤖 Pequeño bro</h3>
+      <p>Consultá tus dudas y recibí explicaciones para seguir aprendiendo.</p>
+    </div>
+  </div>
+
+  <div class="notice">
+    <b>Consejo del laboratorio:</b> no tengas miedo de equivocarte. Probar, observar y corregir también es parte de aprender electrónica.
+  </div>
+</section>
+
+<section id="electricidad" class="page">
+  <h1>Fundamentos de electricidad</h1>
+  <p class="muted">Los conceptos básicos que necesitás para entender un circuito.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Voltaje (V)</h3>
+      <p>Es la diferencia de potencial eléctrico que impulsa las cargas por un circuito.</p>
+      <p><b>Unidad:</b> voltios (V).</p>
+    </div>
+    <div class="card">
+      <h3>Corriente (I)</h3>
+      <p>Es el movimiento de cargas eléctricas a través de un conductor.</p>
+      <p><b>Unidad:</b> amperios (A).</p>
+    </div>
+    <div class="card">
+      <h3>Resistencia (R)</h3>
+      <p>Es la oposición al paso de la corriente eléctrica.</p>
+      <p><b>Unidad:</b> ohmios (Ω).</p>
+    </div>
+    <div class="card">
+      <h3>Potencia (P)</h3>
+      <p>Es la rapidez con la que se transfiere o consume energía eléctrica.</p>
+      <p><b>Unidad:</b> vatios (W).</p>
+    </div>
+  </div>
+  <div class="notice">
+    <b>Ley de Ohm:</b><br>
+    V = I × R<br>
+    Voltaje = Corriente × Resistencia.
+  </div>
+  <h2>Ejemplo</h2>
+  <p>Si tenemos una resistencia de 220 Ω y circula una corriente de 0,01 A:</p>
+  <p>V = 0,01 × 220 = <b>2,2 V</b>.</p>
+</section>
+
+<section id="calculadora" class="page">
+  <h1>Calculadora de Ley de Ohm ⚡</h1>
+  <p class="muted">Ingresá dos valores y calcularemos automáticamente el tercero.</p>
+
+  <div class="card">
+    <h3>Ingresá los valores</h3>
+
+    <label>Voltaje (V)</label>
+    <input id="ohmV" type="number" min="0" step="any" placeholder="Ejemplo: 12">
+
+    <br><br>
+    <label>Corriente (A)</label>
+    <input id="ohmI" type="number" min="0" step="any" placeholder="Ejemplo: 0.5">
+
+    <br><br>
+    <label>Resistencia (Ω)</label>
+    <input id="ohmR" type="number" min="0" step="any" placeholder="Ejemplo: 24">
+
+    <br><br>
+    <button class="action" onclick="calculateOhm()">Calcular resultado</button>
+    <button class="action secondary" onclick="clearOhm()">Limpiar</button>
+
+    <div id="ohmResult" class="notice" style="display:none;"></div>
+  </div>
+
+  <div class="card">
+    <h3>Fórmula de la Ley de Ohm</h3>
+    <p><b>V = I × R</b></p>
+    <p>V = Voltaje (voltios)</p>
+    <p>I = Corriente (amperios)</p>
+    <p>R = Resistencia (ohmios)</p>
+  </div>
+
+  <div class="notice">
+    <b>Consejo de pequeño bro:</b>
+    ingresá solamente dos valores. La calculadora encontrará el tercero.
+  </div>
+</section>
+
+<section id="calculadora" class="page">
+  <h1>Calculadora de Ley de Ohm ⚡</h1>
+  <p class="muted">Ingresá dos valores y calcularemos automáticamente el tercero.</p>
+
+  <div class="card">
+    <h3>Ingresá los valores</h3>
+
+    <label>Voltaje (V)</label>
+    <input id="ohmV" type="number" min="0" step="any" placeholder="Ejemplo: 12">
+
+    <br><br>
+    <label>Corriente (A)</label>
+    <input id="ohmI" type="number" min="0" step="any" placeholder="Ejemplo: 0.5">
+
+    <br><br>
+    <label>Resistencia (Ω)</label>
+    <input id="ohmR" type="number" min="0" step="any" placeholder="Ejemplo: 24">
+
+    <br><br>
+    <button class="action" onclick="calculateOhm()">Calcular resultado</button>
+    <button class="action secondary" onclick="clearOhm()">Limpiar</button>
+
+    <div id="ohmResult" class="notice" style="display:none;"></div>
+  </div>
+
+  <div class="card">
+    <h3>Fórmula de la Ley de Ohm</h3>
+    <p><b>V = I × R</b></p>
+    <p>V = Voltaje (voltios)</p>
+    <p>I = Corriente (amperios)</p>
+    <p>R = Resistencia (ohmios)</p>
+  </div>
+
+  <div class="notice">
+    <b>Consejo de pequeño bro:</b>
+    ingresá solamente dos valores. La calculadora encontrará el tercero.
+  </div>
+</section>
+
+<section id="constructor" class="page">
+  <h1>Constructor de circuitos 🔧</h1>
+  <p class="muted">Elegí un circuito y pequeño bro te enseñará cómo construirlo.</p>
+
+  <div class="card">
+    <h3>1. Elegí tu circuito</h3>
+
+    <select id="circuitType">
+      <option value="led">LED simple</option>
+      <option value="switch">LED con interruptor</option>
+      <option value="series">Dos LED en serie</option>
+      <option value="parallel">Dos LED en paralelo</option>
+    </select>
+
+    <br><br>
+    <button class="action" onclick="buildCircuit()">Construir circuito</button>
+  </div>
+
+  <div id="circuitResult" style="display:none;">
+    <div class="card">
+      <h2 id="circuitTitle"></h2>
+      <p id="circuitDescription"></p>
+    </div>
+
+    <div class="card">
+      <h3>🧰 Componentes necesarios</h3>
+      <ul id="circuitMaterials"></ul>
+    </div>
+
+    <div class="card">
+      <h3>🔌 Esquema del circuito</h3>
+      <div id="circuitDiagram"></div>
+      <p class="muted">Esquema educativo simplificado. No representa las dimensiones reales.</p>
+    </div>
+
+    <div class="card">
+      <h3>📋 Cómo conectarlo</h3>
+      <ol id="circuitSteps"></ol>
+    </div>
+
+    <div class="notice" id="circuitTip"></div>
+  </div>
+</section>
+
+<section id="componentes" class="page">
+  <h1>Componentes electrónicos</h1>
+  <p>Estos son algunos elementos que vas a encontrar al construir circuitos.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>💡 LED</h3>
+      <p>Es un diodo que emite luz cuando circula corriente en el sentido correcto.</p>
+    </div>
+    <div class="card">
+      <h3>〰️ Resistencia</h3>
+      <p>Limita la corriente y ayuda a proteger componentes como los LED.</p>
+    </div>
+    <div class="card">
+      <h3>🔋 Batería</h3>
+      <p>Proporciona energía eléctrica al circuito.</p>
+    </div>
+    <div class="card">
+      <h3>🔘 Interruptor</h3>
+      <p>Permite abrir o cerrar el circuito.</p>
+    </div>
+    <div class="card">
+      <h3>〽️ Cables</h3>
+      <p>Conectan los componentes y permiten el paso de corriente.</p>
+    </div>
+    <div class="card">
+      <h3>⚙️ Motor</h3>
+      <p>Transforma energía eléctrica en movimiento mecánico.</p>
+    </div>
+  </div>
+</section>
+
+<section id="circuitos" class="page">
+  <h1>Cómo construir un circuito</h1>
+  <p>Vamos a aprender con un ejemplo sencillo: encender un LED.</p>
+
+  <div class="card">
+    <h3>Materiales necesarios</h3>
+    <ul>
+      <li>Una fuente de alimentación de baja tensión, de 5 V.</li>
+      <li>Un LED.</li>
+      <li>Una resistencia de 220 Ω como ejemplo inicial.</li>
+      <li>Cables conductores.</li>
+      <li>Una protoboard (opcional).</li>
+    </ul>
+  </div>
+
+  <h2>Pasos para armarlo</h2>
+  <div class="card">
+    <p><b>1.</b> Identificá el positivo y negativo de la fuente.</p>
+    <p><b>2.</b> Conectá el positivo a un extremo de la resistencia.</p>
+    <p><b>3.</b> Conectá el otro extremo de la resistencia al ánodo del LED.</p>
+    <p><b>4.</b> Conectá el cátodo del LED al negativo de la fuente.</p>
+    <p><b>5.</b> Revisá todas las conexiones antes de alimentar el circuito.</p>
+  </div>
+
+  <div class="notice">
+    <b>¿Cómo funciona?</b><br>
+    La fuente proporciona energía, la resistencia limita la corriente y el LED transforma parte de la energía eléctrica en luz.
+  </div>
+
+  <div class="warning">
+    <b>Seguridad:</b> este ejemplo es para aprender con baja tensión. No conectes circuitos escolares directamente a los enchufes de casa. Verificá los límites de corriente y las especificaciones de los componentes.
+  </div>
+</section>
+
+<section id="tinkercad" class="page">
+  <h1>Aprendé Tinkercad</h1>
+  <p>Tinkercad permite diseñar y simular circuitos electrónicos desde el navegador.</p>
+  <div class="card">
+    <h3>¿Cómo empezar?</h3>
+    <ol>
+      <li>Ingresá a <b>tinkercad.com</b>.</li>
+      <li>Iniciá sesión o creá una cuenta con ayuda de un adulto si lo necesitás.</li>
+      <li>Buscá la sección Circuitos.</li>
+      <li>Seleccioná crear un circuito nuevo.</li>
+      <li>Arrastrá los componentes al espacio de trabajo.</li>
+      <li>Conectá los cables y ejecutá la simulación.</li>
+    </ol>
+    <button class="action" onclick="window.open('https://www.tinkercad.com/','_blank')">Abrir Tinkercad ↗</button>
+  </div>
+  <div class="notice">
+    <b>Tip:</b> probá primero con un circuito de LED y resistencia. Después podés agregar un interruptor.
+  </div>
+</section>
+
+<section id="problemas" class="page">
+  <h1>Solución de problemas</h1>
+  <p>Si tu circuito no funciona, revisá estos puntos.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>💡 El LED no enciende</h3>
+      <ul>
+        <li>Revisá la polaridad del LED.</li>
+        <li>Comprobá las conexiones.</li>
+        <li>Verificá la alimentación.</li>
+        <li>Revisá el valor de la resistencia.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🔌 No circula corriente</h3>
+      <ul>
+        <li>Buscá conexiones sueltas.</li>
+        <li>Comprobá que el circuito esté cerrado.</li>
+        <li>Verificá la fuente.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>⚙️ El motor no funciona</h3>
+      <ul>
+        <li>Comprobá sus conexiones.</li>
+        <li>Verificá que la fuente sea adecuada.</li>
+        <li>Revisá que no esté trabado.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="notice">
+    <b>Regla de oro:</b> antes de modificar un circuito físico, desconectá la alimentación. Si algo se calienta, desconectalo y pedí ayuda a una persona capacitada.
+  </div>
+</section>
+
+<section id="desafios" class="page">
+  <h1>Desafíos de electrónica</h1>
+  <p>¡Poné a prueba lo que aprendiste!</p>
+  <div class="card">
+    <h3>Desafío 1</h3>
+    <p>¿Qué componente limita la corriente en un circuito?</p>
+    <button class="action secondary" onclick="alert('¡Correcto! La resistencia limita la corriente.')">Resistencia</button>
+    <button class="action secondary" onclick="alert('No exactamente. Probá otra respuesta.')">Batería</button>
+    <button class="action secondary" onclick="alert('No exactamente. Probá otra respuesta.')">Cable</button>
+  </div>
+  <div class="card">
+    <h3>Desafío 2</h3>
+    <p>¿Qué ley relaciona voltaje, corriente y resistencia?</p>
+    <button class="action secondary" onclick="alert('¡Correcto! Es la Ley de Ohm.')">Ley de Ohm</button>
+    <button class="action secondary" onclick="alert('No exactamente. Probá otra respuesta.')">Ley de Newton</button>
+    <button class="action secondary" onclick="alert('No exactamente. Probá otra respuesta.')">Ley de gravedad</button>
+  </div>
+  <div class="card">
+    <h3>Desafío 3</h3>
+    <p>¿Qué sucede cuando se abre un circuito?</p>
+    <button class="action secondary" onclick="alert('¡Correcto! Se interrumpe el camino de la corriente.')">Se interrumpe la corriente</button>
+    <button class="action secondary" onclick="alert('No exactamente. Probá otra respuesta.')">Aumenta siempre la corriente</button>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  ELECTRO NOGUES © 2026 | APRENDER · EXPERIMENTAR · COMPRENDER
+</footer>
+
+<div class="chat">
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-head">🤖 PEQUEÑO BRO · Asistente virtual</div>
+    <div class="chat-messages" id="messages">
+      <div class="message">¡Hola! Soy pequeño bro. ⚡
+Estoy acá para ayudarte a aprender electrónica.
+
+Podés preguntarme sobre circuitos, componentes, Tinkercad, electricidad o problemas técnicos.</div>
+    </div>
+    <div class="chat-input">
+      <input id="question" placeholder="Escribí tu pregunta..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+  <button class="chat-toggle" onclick="toggleChat()">🤖 Hablar con pequeño bro</button>
+</div>
+
+<script>
+function showPage(id,button) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  if(button) button.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function toggleChat() {
+  document.getElementById('chatWindow').classList.toggle('open');
+}
+
+function addMessage(text,type) {
+  const box=document.getElementById('messages');
+  const msg=document.createElement('div');
+  msg.className='message '+(type||'');
+  msg.textContent=text;
+  box.appendChild(msg);
+  box.scrollTop=box.scrollHeight;
+}
+
+const knowledge = [
+{
+ keys:['hola','buenas','buen día','buenas tardes'],
+ answer:'¡Hola! ⚡ Soy pequeño bro. Estoy listo para ayudarte con electrónica. ¿Qué te gustaría aprender hoy?'
+},
+{
+ keys:['quien sos','quién sos','que sos','qué sos'],
+ answer:'Soy pequeño bro, el asistente educativo de ELECTRO NOGUES. Mi objetivo es ayudarte a aprender electricidad, componentes, circuitos y Tinkercad.'
+},
+{
+ keys:['circuito','armar un circuito','hacer un circuito'],
+ answer:'¡Vamos a construir uno! Para encender un LED necesitás una fuente de baja tensión adecuada, un LED, una resistencia calculada para limitar la corriente y cables. Conectá el positivo de la fuente a la resistencia, después al ánodo del LED y finalmente el cátodo al negativo. Revisá las especificaciones de los componentes antes de alimentar el circuito.'
+},
+{
+ keys:['led','diodo'],
+ answer:'Un LED es un diodo emisor de luz. Tiene polaridad: ánodo (positivo) y cátodo (negativo). Necesita una resistencia adecuada para limitar la corriente y evitar daños.'
+},
+{
+ keys:['resistencia','ohm'],
+ answer:'La resistencia limita el paso de corriente. Se mide en ohmios (Ω). Para calcularla en un circuito LED podés usar: R = (Vfuente - VLED) / ILED. Hay que conocer las especificaciones del LED y la corriente permitida.'
+},
+{
+ keys:['ley de ohm','ohm'],
+ answer:'La Ley de Ohm relaciona tres magnitudes: voltaje, corriente y resistencia. Su fórmula es V = I × R. También podés despejar: I = V / R y R = V / I.'
+},
+{
+ keys:['voltaje','tension','tensión'],
+ answer:'El voltaje es la diferencia de potencial eléctrico entre dos puntos. Se mide en voltios (V) y permite impulsar la corriente en un circuito.'
+},
+{
+ keys:['corriente','amperio','amperios'],
+ answer:'La corriente eléctrica es el movimiento de cargas eléctricas. Se mide en amperios (A). Para medirla se utiliza un amperímetro conectado correctamente en serie.'
+},
+{
+ keys:['potencia','energia','energía'],
+ answer:'La potencia eléctrica indica la rapidez con que se transfiere energía. Se calcula con P = V × I y se mide en vatios (W).'
+},
+{
+ keys:['bateria','batería','pila'],
+ answer:'Una batería proporciona energía eléctrica al circuito. Siempre revisá su voltaje y polaridad, y asegurate de que sea adecuada para los componentes.'
+},
+{
+ keys:['interruptor','llave'],
+ answer:'Un interruptor permite abrir o cerrar un circuito. Cuando está cerrado deja pasar corriente; cuando está abierto interrumpe el camino.'
+},
+{
+ keys:['tinkercad','simulador'],
+ answer:'Tinkercad permite simular circuitos. Entrá a tinkercad.com, abrí Circuitos, creá un diseño nuevo y arrastrá los componentes al área de trabajo. Después conectalos y ejecutá la simulación.'
+},
+{
+ keys:['no funciona','no anda','no prende','no enciende','error'],
+ answer:'Vamos a revisar el problema. Primero desconectá la alimentación si es un circuito físico. Después revisá: 1) conexiones, 2) polaridad del LED, 3) alimentación, 4) resistencia y 5) posibles componentes dañados. ¿Qué circuito estás intentando hacer?'
+},
+{
+ keys:['led no enciende','led no prende'],
+ answer:'Si el LED no enciende, revisá que el ánodo y el cátodo estén bien conectados, que la fuente tenga el voltaje adecuado, que el circuito esté cerrado y que la resistencia sea apropiada.'
+},
+{
+ keys:['motor'],
+ answer:'Un motor eléctrico transforma energía eléctrica en movimiento. Necesita una fuente adecuada a sus especificaciones. Algunos motores requieren un circuito de control adicional.'
+},
+
+{
+ keys:['serie','circuito en serie'],
+ answer:'En un circuito en serie, los componentes están conectados uno después de otro. La misma corriente pasa por todos ellos. Si se interrumpe el camino, deja de circular corriente.'
+},
+{
+ keys:['paralelo','circuito en paralelo'],
+ answer:'En un circuito en paralelo existen diferentes caminos para la corriente. Cada rama tiene el mismo voltaje entre sus extremos.'
+},
+{
+ keys:['diferencia entre serie y paralelo','serie y paralelo','diferencia de serie y paralelo'],
+ answer:'¡Buena pregunta! ⚡ En un circuito en serie hay un solo camino para la corriente y todos los componentes comparten la misma corriente. En uno paralelo existen varios caminos o ramas, y cada rama tiene el mismo voltaje. ¡Esa es la diferencia principal!'
+},
+
+{
+ keys:['consejo','tip','recomendacion','recomendación'],
+ answer:'Consejo de pequeño bro: empezá con circuitos simples, revisá cada conexión, identificá la polaridad de los componentes y probá tus diseños primero en un simulador como Tinkercad.'
+},
+{
+ keys:['seguridad','peligro'],
+ answer:'Trabajá solamente con circuitos educativos de baja tensión y componentes adecuados. Nunca manipules enchufes ni instalaciones eléctricas domésticas. Desconectá la alimentación antes de modificar conexiones y pedí supervisión a una persona capacitada.'
+},
+{
+ keys:['arduino'],
+ answer:'Arduino es una plataforma de electrónica programable. Permite leer sensores y controlar componentes como LED y motores mediante instrucciones. Podés comenzar con un LED y una resistencia en una simulación.'
+},
+{
+ keys:['serie y paralelo','diferencia entre serie y paralelo'],
+ answer:'En serie hay un solo camino para la corriente. En paralelo hay varias ramas. Esta diferencia cambia cómo se distribuyen la corriente y el voltaje.'
+},
+{
+ keys:['gracias'],
+ answer:'¡De nada! ⚡ Seguí practicando. Acá está pequeño bro para ayudarte a aprender.'
+}
+];
+
+function getAnswer(question) {
+  const q = question
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[¿?¡!.,;:]/g, '')
+    .trim();
+
+  // Reconocer preguntas sobre serie y paralelo
+  if (
+    (q.includes('serie') && q.includes('paralelo')) ||
+    q.includes('diferencia entre serie y paralelo')
+  ) {
+    return '¡Buena pregunta! ⚡\n\nCIRCUITO EN SERIE:\nLos componentes están conectados uno después del otro. Existe un solo camino para la corriente y todos comparten la misma corriente.\n\nCIRCUITO EN PARALELO:\nExisten varios caminos o ramas para la corriente. Cada rama tiene el mismo voltaje.\n\nDIFERENCIA PRINCIPAL:\nEn serie hay un solo camino; en paralelo hay varios caminos independientes.';
+  }
+
+  for (const item of knowledge) {
+    if (
+      item.keys.some(key => {
+        const cleanKey = key
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+
+        return q.includes(cleanKey);
+      })
+    ) {
+      return item.answer;
+    }
+  }
+
+  return '¡Buena pregunta! Todavía no tengo información suficiente para responderla con seguridad. Podés preguntarme sobre electricidad, componentes, circuitos, Ley de Ohm, Arduino o Tinkercad. ⚡';
+}
+
+function calculateOhm() {
+  const v = document.getElementById('ohmV');
+  const i = document.getElementById('ohmI');
+  const r = document.getElementById('ohmR');
+  const result = document.getElementById('ohmResult');
+
+  const V = v.value.trim() === '' ? null : Number(v.value);
+  const I = i.value.trim() === '' ? null : Number(i.value);
+  const R = r.value.trim() === '' ? null : Number(r.value);
+
+  const values = [V, I, R];
+
+  if (values.some(x => x !== null && (!Number.isFinite(x) || x < 0))) {
+    result.style.display = 'block';
+    result.textContent = 'Ingresá valores numéricos válidos y positivos.';
+    return;
+  }
+
+  if (values.filter(x => x !== null).length !== 2) {
+    result.style.display = 'block';
+    result.textContent = 'Tenés que ingresar exactamente dos valores.';
+    return;
+  }
+
+  let answer;
+  let message;
+
+  if (V === null) {
+    answer = I * R;
+    message = 'Voltaje: ' + answer + ' V';
+    v.value = answer;
+  } else if (I === null) {
+    if (R === 0) {
+      message = 'No se puede dividir por cero.';
+    } else {
+      answer = V / R;
+      message = 'Corriente: ' + answer + ' A';
+      i.value = answer;
+    }
+  } else {
+    if (I === 0) {
+      message = 'No se puede dividir por cero.';
+    } else {
+      answer = V / I;
+      message = 'Resistencia: ' + answer + ' Ω';
+      r.value = answer;
+    }
+  }
+
+  result.style.display = 'block';
+
+  if (answer !== undefined) {
+    result.innerHTML =
+      '<b>¡Resultado calculado! ⚡</b><br>' +
+      message +
+      '<br><br>Aplicando la Ley de Ohm: V = I × R';
+  } else {
+    result.textContent = message;
+  }
+}
+
+function clearOhm() {
+  document.getElementById('ohmV').value = '';
+  document.getElementById('ohmI').value = '';
+  document.getElementById('ohmR').value = '';
+  document.getElementById('ohmResult').style.display = 'none';
+}
+
+function calculateOhm() {
+  const v = document.getElementById('ohmV');
+  const i = document.getElementById('ohmI');
+  const r = document.getElementById('ohmR');
+  const result = document.getElementById('ohmResult');
+
+  const V = v.value.trim() === '' ? null : Number(v.value);
+  const I = i.value.trim() === '' ? null : Number(i.value);
+  const R = r.value.trim() === '' ? null : Number(r.value);
+
+  const values = [V, I, R];
+
+  if (values.some(x => x !== null && (!Number.isFinite(x) || x < 0))) {
+    result.style.display = 'block';
+    result.textContent = 'Ingresá valores numéricos válidos y positivos.';
+    return;
+  }
+
+  if (values.filter(x => x !== null).length !== 2) {
+    result.style.display = 'block';
+    result.textContent = 'Tenés que ingresar exactamente dos valores.';
+    return;
+  }
+
+  let answer;
+  let message;
+
+  if (V === null) {
+    answer = I * R;
+    message = 'Voltaje: ' + answer + ' V';
+    v.value = answer;
+  } else if (I === null) {
+    if (R === 0) {
+      message = 'No se puede dividir por cero.';
+    } else {
+      answer = V / R;
+      message = 'Corriente: ' + answer + ' A';
+      i.value = answer;
+    }
+  } else {
+    if (I === 0) {
+      message = 'No se puede dividir por cero.';
+    } else {
+      answer = V / I;
+      message = 'Resistencia: ' + answer + ' Ω';
+      r.value = answer;
+    }
+  }
+
+  result.style.display = 'block';
+
+  if (answer !== undefined) {
+    result.innerHTML =
+      '<b>¡Resultado calculado! ⚡</b><br>' +
+      message +
+      '<br><br>Aplicando la Ley de Ohm: V = I × R';
+  } else {
+    result.textContent = message;
+  }
+}
+
+function clearOhm() {
+  document.getElementById('ohmV').value = '';
+  document.getElementById('ohmI').value = '';
+  document.getElementById('ohmR').value = '';
+  document.getElementById('ohmResult').style.display = 'none';
+}
+
+const circuitData = {
+  led: {
+    title: 'LED simple 💡',
+    description: 'Un circuito básico donde la energía de la fuente permite encender un LED.',
+    materials: ['Fuente de baja tensión adecuada', '1 LED', '1 resistencia calculada', 'Cables conductores'],
+    steps: [
+      'Identificá el positivo y el negativo de la fuente.',
+      'Conectá el positivo a la resistencia.',
+      'Conectá la resistencia al ánodo del LED.',
+      'Conectá el cátodo del LED al negativo.',
+      'Revisá las conexiones antes de alimentar el circuito.'
+    ],
+    tip: 'Pequeño bro recomienda: el LED tiene polaridad. El ánodo es positivo y el cátodo es negativo.',
+    diagram: `
+      <svg viewBox="0 0 320 150" width="100%" role="img" aria-label="Fuente, resistencia y LED conectados en serie">
+        <g fill="none" stroke="#20e0b0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M25 75 H75 M125 75 H175 M215 75 H290 V120 H25 V75"/>
+          <path d="M75 75 L83 62 L91 88 L99 62 L107 88 L115 75"/>
+          <path d="M175 55 L215 75 L175 95 Z"/>
+          <path d="M215 55 V95"/>
+          <path d="M185 48 L202 30 M198 30 L202 30 L202 34"/>
+          <path d="M200 53 L217 35 M213 35 L217 35 L217 39"/>
+        </g>
+        <g fill="#e9f5f3" font-size="11">
+          <text x="20" y="62">+</text>
+          <text x="20" y="140">Fuente</text>
+          <text x="83" y="52">R</text>
+          <text x="178" y="112">LED</text>
+          <text x="270" y="65">−</text>
+        </g>
+      </svg>`
+  },
+
+  switch: {
+    title: 'LED con interruptor 🔘',
+    description: 'El interruptor permite encender y apagar el LED abriendo o cerrando el circuito.',
+    materials: ['Fuente de baja tensión adecuada', '1 LED', '1 resistencia calculada', '1 interruptor', 'Cables conductores'],
+    steps: [
+      'Conectá el positivo de la fuente al interruptor.',
+      'Conectá la salida del interruptor a la resistencia.',
+      'Uní la resistencia con el ánodo del LED.',
+      'Conectá el cátodo al negativo de la fuente.',
+      'El interruptor cerrado completa el circuito.'
+    ],
+    tip: 'Pequeño bro recomienda: un interruptor abierto interrumpe la corriente; uno cerrado permite que circule.',
+    diagram: `
+      <svg viewBox="0 0 320 150" width="100%" role="img" aria-label="Fuente, interruptor, resistencia y LED">
+        <g fill="none" stroke="#20e0b0" stroke-width="3" stroke-linecap="round">
+          <path d="M25 75 H65 M105 75 H135 M185 75 H215 M255 75 H290 V120 H25 V75"/>
+          <path d="M65 75 L103 55"/>
+          <path d="M135 75 L143 62 L151 88 L159 62 L167 88 L175 75"/>
+          <path d="M215 55 L255 75 L215 95 Z M255 55 V95"/>
+        </g>
+        <g fill="#e9f5f3" font-size="11">
+          <text x="20" y="62">+</text><text x="20" y="140">Fuente</text>
+          <text x="65" y="45">Interruptor</text>
+          <text x="145" y="52">R</text><text x="218" y="112">LED</text>
+          <text x="270" y="65">−</text>
+        </g>
+      </svg>`
+  },
+
+  series: {
+    title: 'Dos LED en serie 💡💡',
+    description: 'Los dos LED están conectados uno después del otro. La misma corriente circula por ambos.',
+    materials: ['Fuente de baja tensión adecuada', '2 LED compatibles', '1 resistencia calculada para ambos', 'Cables conductores'],
+    steps: [
+      'Conectá el positivo de la fuente a la resistencia.',
+      'Conectá la resistencia al ánodo del primer LED.',
+      'Uní el cátodo del primer LED con el ánodo del segundo.',
+      'Conectá el cátodo del segundo LED al negativo.',
+      'Verificá que la fuente tenga tensión suficiente para ambos LED.'
+    ],
+    tip: 'Pequeño bro recomienda: en serie, si se interrumpe una conexión, los dos LED dejan de funcionar.',
+    diagram: `
+      <svg viewBox="0 0 340 150" width="100%" role="img" aria-label="Dos LED conectados en serie">
+        <g fill="none" stroke="#20e0b0" stroke-width="3" stroke-linecap="round">
+          <path d="M20 75 H55 M105 75 H125 M165 75 H185 M225 75 H245 M285 75 H320 V120 H20 V75"/>
+          <path d="M55 75 L63 62 L71 88 L79 62 L87 88 L95 75"/>
+          <path d="M125 55 L165 75 L125 95 Z M165 55 V95"/>
+          <path d="M185 55 L225 75 L185 95 Z M225 55 V95"/>
+        </g>
+        <g fill="#e9f5f3" font-size="11">
+          <text x="16" y="62">+</text><text x="18" y="140">Fuente</text>
+          <text x="65" y="52">R</text><text x="130" y="112">LED 1</text>
+          <text x="190" y="112">LED 2</text><text x="300" y="65">−</text>
+        </g>
+      </svg>`
+  },
+
+  parallel: {
+    title: 'Dos LED en paralelo 💡💡',
+    description: 'Cada LED tiene su propia rama. Cada rama lleva su propia resistencia.',
+    materials: ['Fuente de baja tensión adecuada', '2 LED compatibles', '2 resistencias calculadas individualmente', 'Cables conductores'],
+    steps: [
+      'Prepará dos ramas independientes conectadas a la fuente.',
+      'En cada rama conectá el positivo a una resistencia.',
+      'Conectá cada resistencia al ánodo de su LED.',
+      'Conectá cada cátodo al negativo de la fuente.',
+      'Comprobá que cada resistencia sea adecuada para su LED.'
+    ],
+    tip: 'Pequeño bro recomienda: usá una resistencia por LED. No conectes LED en paralelo sin limitar correctamente la corriente de cada rama.',
+    diagram: `
+      <svg viewBox="0 0 340 190" width="100%" role="img" aria-label="Dos ramas en paralelo, cada una con resistencia y LED">
+        <g fill="none" stroke="#20e0b0" stroke-width="3" stroke-linecap="round">
+          <path d="M20 95 H55 V45 H75 M55 145 H75 M20 95 V165 H320 V95"/>
+          <path d="M75 45 L83 35 L91 55 L99 35 L107 55 L115 45 H145"/>
+          <path d="M145 30 L175 45 L145 60 Z M175 30 V60"/>
+          <path d="M75 145 L83 135 L91 155 L99 135 L107 155 L115 145 H145"/>
+          <path d="M145 130 L175 145 L145 160 Z M175 130 V160"/>
+          <path d="M175 45 H300 V95 M175 145 H300 V95"/>
+        </g>
+        <g fill="#e9f5f3" font-size="11">
+          <text x="15" y="82">+</text><text x="18" y="185">Fuente</text>
+          <text x="85" y="25">R1</text><text x="85" y="125">R2</text>
+          <text x="145" y="78">LED 1</text><text x="145" y="178">LED 2</text>
+          <text x="305" y="82">−</text>
+        </g>
+      </svg>`
+  }
+};
+
+function buildCircuit() {
+  const type = document.getElementById('circuitType').value;
+  const data = circuitData[type];
+
+  if (!data) return;
+
+  document.getElementById('circuitTitle').textContent = data.title;
+  document.getElementById('circuitDescription').textContent = data.description;
+
+  const materials = document.getElementById('circuitMaterials');
+  materials.innerHTML = '';
+  data.materials.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    materials.appendChild(li);
+  });
+
+  const steps = document.getElementById('circuitSteps');
+  steps.innerHTML = '';
+  data.steps.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    steps.appendChild(li);
+  });
+
+  document.getElementById('circuitDiagram').innerHTML = data.diagram;
+  document.getElementById('circuitTip').textContent = data.tip;
+  document.getElementById('circuitResult').style.display = 'block';
+}
+
+function sendMessage() {
+  const input = document.getElementById('question');
+  const question = input.value.trim();
+
+  if (!question) return;
+
+  addMessage(question, 'user');
+  input.value = '';
+
+  const answer = getAnswer(question);
+  addMessage(answer, '');
+}
+</script>
+</body>
+</html>
