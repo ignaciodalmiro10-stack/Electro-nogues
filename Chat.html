@@ -1,0 +1,246 @@
+chat.html
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pequeño Bro | Electro NOGUES</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;font-family:Arial,sans-serif;
+ background:#edf3fc;color:#172d52;
+ display:flex;justify-content:center;min-height:100vh;
+}
+.app{
+ width:100%;max-width:650px;height:100vh;
+ display:flex;flex-direction:column;
+ background:#f8faff;
+}
+header{
+ background:#245bce;color:white;padding:19px;
+ display:flex;align-items:center;gap:13px;
+ box-shadow:0 3px 12px #0002;
+}
+.logo{
+ background:#ffffff25;border-radius:15px;
+ width:46px;height:46px;display:grid;
+ place-items:center;font-size:25px;
+}
+header h2{margin:0;font-size:20px}
+header p{margin:5px 0 0;font-size:12px;opacity:.85}
+.status{margin-left:auto;font-size:12px}
+main{flex:1;overflow-y:auto;padding:18px}
+.welcome{
+ background:#e5edff;padding:17px;
+ border-radius:17px;margin-bottom:18px;
+}
+.welcome h2{margin:0 0 9px}
+.welcome p{margin:0;line-height:1.5}
+.quick{
+ display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;
+}
+.quick button{
+ border:1px solid #cbd9f4;background:white;
+ color:#245bce;padding:10px 12px;
+ border-radius:20px;font-weight:bold;
+}
+.message{
+ padding:12px 15px;border-radius:16px;
+ margin:12px 0;max-width:88%;
+ line-height:1.5;white-space:pre-wrap;
+ overflow-wrap:anywhere;
+}
+.bot{background:#e7eefb;margin-right:auto}
+.user{background:#245bce;color:white;margin-left:auto}
+footer{
+ display:flex;gap:8px;padding:12px;
+ background:white;border-top:1px solid #dce5f4;
+}
+input{
+ flex:1;min-width:0;border:1px solid #cbd9e9;
+ padding:14px;border-radius:25px;outline:none;
+ font-size:15px;
+}
+footer button{
+ border:0;background:#245bce;color:white;
+ padding:0 19px;border-radius:25px;font-size:19px;
+}
+small{text-align:center;color:#8291a9;padding:7px}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="logo">⚡</div>
+ <div>
+  <h2>Pequeño Bro</h2>
+  <p>Asistente de Electro NOGUES</p>
+ </div>
+ <div class="status">● Disponible</div>
+</header>
+
+<main id="chat">
+ <div class="welcome">
+  <h2>¡Hola! 👋</h2>
+  <p>Soy Pequeño Bro. Puedo ayudarte a aprender electricidad, electrónica, circuitos y mucho más.</p>
+ </div>
+ <div class="quick">
+  <button onclick="ask('¿Qué es la electricidad?')">⚡ Electricidad</button>
+  <button onclick="ask('Explicame los circuitos')">🔌 Circuitos</button>
+  <button onclick="ask('Explicame la Ley de Ohm')">🧮 Ley de Ohm</button>
+  <button onclick="ask('Consejos de seguridad')">🦺 Seguridad</button>
+ </div>
+ <div class="message bot">¡Buenas! ¿Qué vamos a aprender hoy? 😎</div>
+</main>
+
+<footer>
+ <input id="question" placeholder="Escribí tu pregunta..."
+ onkeydown="if(event.key==='Enter')send()">
+ <button onclick="send()">➤</button>
+</footer>
+<small>Electro NOGUES · Aprender es conectar ⚡</small>
+</div>
+
+<script>
+const knowledge = [
+{
+keys:["hola","buenas","buenos dias","buenas tardes"],
+answer:"¡Holaaa! 😎 Soy Pequeño Bro. ¿Qué tema de electricidad querés aprender?"
+},
+{
+keys:["electricidad","que es la electricidad"],
+answer:"⚡ La electricidad es una forma de energía relacionada con la presencia y el movimiento de cargas eléctricas. Se utiliza para alimentar luces, motores, electrodomésticos y muchos otros dispositivos."
+},
+{
+keys:["circuito","circuitos"],
+answer:"🔌 Un circuito eléctrico es un camino cerrado por el que puede circular la corriente eléctrica. Sus elementos principales son:\n\n• Fuente: proporciona energía.\n• Conductores: transportan la corriente.\n• Receptor: transforma la energía.\n• Interruptor: abre o cierra el circuito."
+},
+{
+keys:["serie"],
+answer:"🔗 En un circuito en serie, los componentes están conectados uno después del otro. La corriente tiene un único camino. Si un componente interrumpe el circuito, deja de circular corriente por todos."
+},
+{
+keys:["paralelo"],
+answer:"🔀 En un circuito en paralelo, los componentes están conectados en diferentes ramas. Cada rama tiene su propio camino y recibe la misma tensión de la fuente."
+},
+{
+keys:["mixto"],
+answer:"🔌 Un circuito mixto combina conexiones en serie y en paralelo. Para resolverlo, se identifican primero los grupos de componentes conectados en cada forma."
+},
+{
+keys:["ohm","ley de ohm"],
+answer:"🧮 La Ley de Ohm relaciona tensión, corriente y resistencia.\n\nV = I × R\n\nV: tensión en voltios.\nI: corriente en amperios.\nR: resistencia en ohmios.\n\nEjemplo: 12 V / 4 Ω = 3 A."
+},
+{
+keys:["resistencia","resistor"],
+answer:"🟠 Una resistencia es un componente que limita el paso de corriente eléctrica. Su unidad de medida es el ohmio (Ω)."
+},
+{
+keys:["voltaje","tension"],
+answer:"🔋 La tensión eléctrica es la diferencia de potencial entre dos puntos. Se mide en voltios (V)."
+},
+{
+keys:["corriente","intensidad","amperaje"],
+answer:"⚡ La corriente eléctrica es el movimiento ordenado de cargas eléctricas. Se mide en amperios (A)."
+},
+{
+keys:["potencia"],
+answer:"💡 La potencia eléctrica representa la rapidez con la que se consume o transforma energía eléctrica. Se mide en vatios (W).\n\nFórmula: P = V × I."
+},
+{
+keys:["arduino"],
+answer:"🤖 Arduino es una plataforma de electrónica programable. Permite crear proyectos con sensores, luces LED, motores y otros componentes."
+},
+{
+keys:["tinkercad"],
+answer:"🛠️ Tinkercad es una plataforma que permite diseñar y simular circuitos electrónicos de manera virtual. Es ideal para aprender sin conectar componentes reales."
+},
+{
+keys:["serie y paralelo","diferencia"],
+answer:"🔗 Serie: los componentes comparten un único camino para la corriente.\n\n🔀 Paralelo: existen diferentes ramas para que circule la corriente."
+},
+{
+keys:["seguridad","peligro","consejos"],
+answer:"🦺 CONSEJOS DE SEGURIDAD:\n\n• Nunca manipules instalaciones energizadas.\n• No toques cables pelados.\n• No trabajes con electricidad sin supervisión y formación.\n• Utilizá materiales adecuados.\n• Ante una instalación defectuosa, recurrí a un electricista calificado."
+},
+{
+keys:["motor"],
+answer:"⚙️ Un motor eléctrico transforma energía eléctrica en energía mecánica, produciendo movimiento."
+},
+{
+keys:["diodo","led"],
+answer:"💡 Un LED es un diodo que emite luz cuando circula corriente en el sentido adecuado. Debe utilizarse con una resistencia apropiada para evitar daños."
+},
+{
+keys:["capacitor","condensador"],
+answer:"🔋 Un capacitor es un componente que almacena energía en un campo eléctrico. Su capacidad se mide en faradios (F)."
+},
+{
+keys:["fusible"],
+answer:"🛡️ Un fusible es un elemento de protección que interrumpe el circuito cuando la corriente supera cierto valor."
+},
+{
+keys:["gracias"],
+answer:"¡De nada! 😎 Para eso estoy. ¡Seguimos aprendiendo!"
+}
+];
+
+function normalize(s){
+ return s.toLowerCase().normalize("NFD")
+ .replace(/[\u0300-\u036f]/g,"");
+}
+
+function calculate(q){
+ let m=q.match(/(\d+(?:[.,]\d+)?)\s*(?:v|voltios?)\s*(?:\/|entre)\s*(\d+(?:[.,]\d+)?)\s*(?:ohm|ohmios|Ω)/i);
+ if(m){
+  let v=parseFloat(m[1].replace(",","."));
+  let r=parseFloat(m[2].replace(",","."));
+  return "🧮 Cálculo de Ley de Ohm:\n\nI = V / R\nI = "+v+" / "+r+"\n\nResultado: "+(v/r).toFixed(2)+" amperios (A).";
+ }
+ return null;
+}
+
+function reply(q){
+ let n=normalize(q);
+ let result=calculate(n);
+ if(result)return result;
+
+ for(let item of knowledge){
+  if(item.keys.some(k=>n.includes(normalize(k)))){
+   return item.answer;
+  }
+ }
+
+ if(n.includes("ayuda"))
+ return "¡Claro! Puedo ayudarte con electricidad, circuitos, Ley de Ohm, componentes, Arduino, Tinkercad y seguridad eléctrica. Preguntame sobre alguno de estos temas.";
+
+ return "🤔 Todavía no tengo una respuesta programada para esa pregunta.\n\nProbá preguntarme sobre electricidad, circuitos, Ley de Ohm, resistencias, motores, Arduino o seguridad.\n\n¡Estoy aprendiendo con Electro NOGUES! ⚡";
+}
+
+function add(text,type){
+ const d=document.createElement("div");
+ d.className="message "+type;
+ d.textContent=text;
+ const chat=document.getElementById("chat");
+ chat.appendChild(d);
+ chat.scrollTop=chat.scrollHeight;
+}
+
+function ask(q){
+ document.getElementById("question").value=q;
+ send();
+}
+
+function send(){
+ const input=document.getElementById("question");
+ const q=input.value.trim();
+ if(!q)return;
+ add(q,"user");
+ input.value="";
+ setTimeout(()=>add(reply(q),"bot"),250);
+}
+</script>
+</body>
+</html>
